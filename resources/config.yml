@@ -1,0 +1,12 @@
+orgs:
+- grant_type: oauth
+  login_url: https://YOUR-ORG.my.salesforce.com
+  name: Sample-Org
+  params:
+    consumer_key: SF_CK
+    consumer_secret: SF_CS
+    password: SF_PW
+    security_token: SF_ST
+    username: SF_UN
+  authentication:
+    path: /services/oauth2/token
