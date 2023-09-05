@@ -3,6 +3,7 @@ target_fields = [
     'Id',
     'FirstName',
     'LastName',
+    'Title',
     'Email',
     'Phone',
     'MailingStreet',

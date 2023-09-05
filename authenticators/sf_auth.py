@@ -21,7 +21,7 @@ def get_org_listing(config):
 def authenticate_org(org_index):
     global auth_method
     org = {}
-    iterations = 4
+    iterations = 3
 
     for i in range(iterations+1):
         sys.stdout.write(f"\rAuthenticating{'.' * i}")

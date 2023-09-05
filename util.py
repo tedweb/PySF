@@ -56,7 +56,7 @@ def get_selection(listings, caption=None, max_cols=5):
     result = None
     while result is None:
         entry = input(caption).upper()
-        if entry.isnumeric() and int(entry)<len(listings):
+        if entry.isnumeric() and int(entry)<=len(listings):
             #result = listings[int(entry)-1]
             result = int(entry)-1
         elif entry == 'B':
@@ -66,6 +66,53 @@ def get_selection(listings, caption=None, max_cols=5):
         else:
             reset_entry(caption)
     return result
+
+def get_payload(fields=[], existing_record = None):
+    payload = {}
+    entry = ""
+    existing_record_is_none = existing_record == None
+    existing_record_is_blank = existing_record == payload
+    existing_record_is_defined = not existing_record_is_none and not existing_record_is_blank
+
+    read_only_fields = [
+        'Id',
+        'CreatedDate',
+        'CreatedById',
+        'LastModifiedDate',
+        'LastModifiedById'
+    ]
+
+    for field_index in range(len(fields)):
+        field_name = fields[field_index]
+        readonly_field = field_name in read_only_fields
+        existing_value = ''
+        if existing_record_is_defined and field_name in existing_record:
+            existing_value = existing_record[field_name]
+
+        if existing_record_is_blank:
+            entry = input(f"  {field_name}: ")
+            payload[field_name] = entry
+        elif existing_record_is_none and not readonly_field:
+            entry = input(f"  {field_name}: ")
+            payload[field_name] = entry
+        elif existing_record_is_defined and not readonly_field:
+            existing_value_caption = existing_value or ''
+            if existing_value_caption:
+                existing_value_caption = f" [Existing Value = '{existing_value_caption}']"
+            entry = input(f"  {field_name}{existing_value_caption}: ") or existing_value
+            if entry != existing_value:
+                payload[field_name] = entry
+    if existing_record_is_none or existing_record_is_defined:
+        print("\r\nCheck your values!")
+        caption = 'Proceed? (Y)es or (N)o: '
+        do_proceed = input(caption)
+        while do_proceed.upper() not in ['Y', 'N']:
+            reset_entry(caption)
+            do_proceed = input(caption)
+        if do_proceed.upper() != 'Y':
+            return None
+    return payload
+    
 
 def reset_entry(caption, error_message=None):
     if not error_message:
@@ -88,3 +135,22 @@ def shutdown(iterations):
     time.sleep(0)
     quit()
 
+def format_get(records, fields=[]):
+    formatted_response = f"{len(records)} record(s) discovered:\r\n"
+    padding = 20
+
+    for field_index in range(len(fields)):
+        if len(fields[field_index]) > padding:
+            padding = len(records[record_index]) + 3
+
+    for record_index in range(len(records)):
+        record = records[record_index]
+        record_value = "  ---\r\n"
+        for field_index in range(len(fields)):
+            field_name = fields[field_index]
+            field_value = record[field_name]
+            record_value = "  ".join([record_value,f"{field_name.ljust(padding, '.')} {field_value}\r\n"])
+        formatted_response = "".join([formatted_response, f"{record_value}"])
+    if len(records) > 0:
+        formatted_response = "".join([formatted_response, "  ---\r\n"])
+    return formatted_response
