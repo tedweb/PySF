@@ -4,7 +4,7 @@ This is a simple Python script that connects to a defined Salesforce instance an
 - Listen for events via Pub/Sub API
 - Kick off an automated process such as a Flow or Apex class
 
-### Requirements:
+### Prerequisites:
 - Python 3.8 or higher
 - pip3 (`python -m pip3 install --upgrade pip`)
 - requests (`pip3 install requests`)
