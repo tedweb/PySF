@@ -1,12 +1,23 @@
 orgs:
-- grant_type: oauth
-  login_url: https://YOUR-ORG.my.salesforce.com
-  name: Sample-Org
-  params:
-    consumer_key: SF_CK
-    consumer_secret: SF_CS
-    password: SF_PW
-    security_token: SF_ST
-    username: SF_UN
-  authentication:
-    path: /services/oauth2/token
+# -----------------------------------------
+# Template for Client Credentials authentication
+# -----------------------------------------
+# - name: Sample-OAuth
+#   grant_type: cc
+#   params:
+#     login_url: SF_URL_1        # <referenced login url key from .env file>
+#     auth_path: SF_AUTH_PATH_1  # <referenced auth path key from .env file>
+#     consumer_key: SF_CK_1      # <referenced consumer key from .env file>
+#     consumer_secret: SF_CS_1   # <referenced consumer secret key from .env file>
+
+# -----------------------------------------
+# Template for JWT authentication
+# -----------------------------------------
+# - name: Sample-JWT
+#   grant_type: jwt
+#   params:
+#     login_url: SF_URL_2        # <referenced login_url key from .env file>
+#     auth_path: SF_AUTH_PATH_2  # <referenced auth_path key from .env file>
+#     username: SF_UN_2          # <referenced username key from .env file>
+#     key_file: SF_ISS_2         # <referenced *.key file key from .env file>
+#     issuer: SF_KEY_2           # <referenced issuer key from .env file>
