@@ -109,6 +109,6 @@ venv.bak/
 *.key
 
 #config files
-config.yml
-resources/.env
-resources/config.yml
+#config.yml
+#resources/.env
+#resources/config.yml
