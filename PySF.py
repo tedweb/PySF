@@ -23,7 +23,7 @@ splash_screen = '''
                            ,#@&&&#,
 
                       Python Interface for Salesforce
-                             ©2023 by Ted Godwin
+                              ©2023 Ted Godwin
 '''
 command_listing = [
   'REST: Query an object',

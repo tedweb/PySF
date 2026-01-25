@@ -11,7 +11,7 @@ cli_params = [
     }, {
         "name": "Grant Type",
         "field": "grant_type",
-        "default": "oauth"
+        "default": "jwt"
     }, {
         "name": "User Name",
         "field": "username",
@@ -36,10 +36,14 @@ cli_params = [
 ]
 
 def get_params_from_env_vars(org):
+    login_url_key = org["params"]["login_url"]
+    auth_path_key = org["params"]["auth_path"]
     key_file_key = org["params"]["key_file"]
     user_name_key = org["params"]["username"]
     issuer_key = org["params"]["issuer"]
     return {
+        "login_url": os.getenv(login_url_key),
+        "auth_path": os.getenv(auth_path_key),
         "key_file": os.getenv(key_file_key),
         "username": os.getenv(user_name_key), # Dedicated integration user username
         "issuer": os.getenv(issuer_key)
@@ -47,9 +51,9 @@ def get_params_from_env_vars(org):
 
 def get_authentication(org):
     request_params = {
+        'aud': org['params']['login_url'],
         'iss': org['params']['issuer'],
         'exp': int(time.time()) + 300,
-        'aud': org['login_url'],
         'sub': org['params']['username']
     }
 
@@ -59,7 +63,7 @@ def get_authentication(org):
     encoded = jwt.encode(request_params, private_key, algorithm='RS256')
 
     response = requests.post(
-        url = f"{org['login_url']}{org['authentication']['path']}",
+        url = f"{org['params']['login_url']}{org['params']['auth_path']}",
         data = {
             'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
             'assertion': encoded
@@ -74,10 +78,8 @@ def get_authentication(org):
 
     return {
         "connection_name": org['name'],
-        "user_name": org['params']['username'],
         "access_token": response.get("access_token"),
         "instance_url": response.get("instance_url"),
-        "path": org['authentication']['path'],
         "id": response.get("id"),
         "token_type": response.get("token_type"),
         "issued_at": response.get("issued_at"),

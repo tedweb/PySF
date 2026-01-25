@@ -1,14 +1,14 @@
-import sf_oauth
+import sf_cc
 import sf_jwt
 import sys, time
 
 auth_methods = {
-    'oauth': sf_oauth,
+    'cc': sf_cc,
     'jwt': sf_jwt
 }
 org_list = None
 auth_method = None
-default_grant_type = 'oauth'
+default_grant_type = 'client_credentials'
 
 def get_org_listing(config):
     global org_list
@@ -32,7 +32,7 @@ def authenticate_org(org_index):
     if org_index < len(org_list):
         org = org_list[org_index].copy()
         grant_type = org['grant_type']
-        auth_method = auth_methods[grant_type]
+        auth_method = auth_methods[grant_type] #This is either sf_cc.py or sf_jwt.py
         org['params'] = auth_method.get_params_from_env_vars(org)
     else:
         grant_type = input (f"  Grant Type [{default_grant_type}]: ")
