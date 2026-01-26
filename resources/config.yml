@@ -21,38 +21,3 @@ orgs:
 #     username: SF_UN_2          # <referenced username key from .env file>
 #     key_file: SF_KEY_2         # <referenced *.key file key from .env file>
 #     issuer: SF_ISS_2           # <referenced issuer key from .env file>
-
-# -----------------------------------------
-# Client Credentials authentication for TedWeb dev org
-# -----------------------------------------
-- name: TedWeb Org
-  grant_type: cc
-  params:
-    login_url: SF_URL_1        # <referenced login url key from .env file>
-    auth_path: SF_AUTH_PATH_1  # <referenced auth path key from .env file>
-    consumer_key: SF_CK_1      # <referenced consumer key from .env file>
-    consumer_secret: SF_CS_1   # <referenced consumer secret key from .env file>
-
-# -----------------------------------------
-# JWT Credentials for Agentforce Environment
-# -----------------------------------------
-- name: Agentforce Orgfarm Org (Prod)
-  grant_type: jwt
-  params:
-    login_url: SF_URL_2        # <referenced login_url key from .env file>
-    auth_path: SF_AUTH_PATH_2  # <referenced auth_path key from .env file>
-    username: SF_UN_2          # <referenced username key from .env file>
-    key_file: SF_KEY_2         # <referenced *.key file key from .env file>
-    issuer: SF_ISS_2           # <referenced issuer key from .env file>
-
-# -----------------------------------------
-# JWT Credentials for Agentforce Environment
-# -----------------------------------------
-- name: Agentforce Orgfarm Org (Dev)
-  grant_type: jwt
-  params:
-    login_url: SF_URL_3        # <referenced login_url key from .env file>
-    auth_path: SF_AUTH_PATH_3  # <referenced auth_path key from .env file>
-    username: SF_UN_3          # <referenced username key from .env file>
-    key_file: SF_KEY_3         # <referenced *.key file key from .env file>
-    issuer: SF_ISS_3           # <referenced issuer key from .env file>
