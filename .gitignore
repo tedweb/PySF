@@ -110,5 +110,7 @@ venv.bak/
 
 #config files
 .DS_Store
+.env
+config.yml
 resources/.env
 resources/config.yml
