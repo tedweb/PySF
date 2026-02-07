@@ -82,7 +82,7 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-.env
+#.env
 .venv
 env/
 venv/
@@ -103,14 +103,12 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# resource files
+# cert files
 *.crt
 *.csr
 *.key
-*.env
-*.yml
-.DS_Store
 
 # config files
-resources/*.env
+resources/.env
 resources/config.yml
+.DS_Store
