@@ -1,6 +1,7 @@
 import sf_cc
 import sf_jwt
 import sys, time
+import constants
 
 auth_methods = {
     'cc': sf_cc,
@@ -22,6 +23,7 @@ def authenticate_org(org_index):
     global auth_method
     org = {}
     iterations = 3
+    grant_type = constants.DEFAULT_GRANT_TYPE
 
     for i in range(iterations+1):
         sys.stdout.write(f"\rAuthenticating{'.' * i}")
@@ -29,10 +31,11 @@ def authenticate_org(org_index):
         sys.stdout.flush()
     sys.stdout.write(f"\rAuthenticating{'.' * i} ")
 
-    if org_index < len(org_list):
+    if f"{org_index}".isnumeric() and org_index < len(org_list):
         org = org_list[org_index].copy()
-        grant_type = org['grant_type']
-        auth_method = auth_methods[grant_type] #This is either sf_cc.py or sf_jwt.py
+        if 'grant_type' in org and org['grant_type'] in auth_methods:
+            grant_type = org['grant_type'].lower()
+        auth_method = auth_methods[grant_type] # This is either sf_cc.py or sf_jwt.py
         org['params'] = auth_method.get_params_from_env_vars(org)
     else:
         grant_type = input (f"  Grant Type [{default_grant_type}]: ")

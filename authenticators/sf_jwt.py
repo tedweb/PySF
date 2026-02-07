@@ -2,6 +2,7 @@ import jwt
 import time
 import requests
 import os
+import constants
 
 cli_params = [
     {
@@ -36,17 +37,34 @@ cli_params = [
 ]
 
 def get_params_from_env_vars(org):
-    login_url_key = org["params"]["login_url"]
-    auth_path_key = org["params"]["auth_path"]
-    key_file_key = org["params"]["key_file"]
-    user_name_key = org["params"]["username"]
-    issuer_key = org["params"]["issuer"]
+    login_url = f"{constants.DEFAULT_PROTOCOL}{constants.DEFAULT_URL}"
+    auth_path = constants.DEFAULT_AUTH_PATH
+    consumer_key = ''
+    key_file = ''
+    user_name = ''
+
+    if 'params' in org:
+        if 'login_url' in org['params']:
+            login_url = os.getenv(org["params"]["login_url"])
+            if login_url.find('://') < 0:
+                login_url = f"{constants.DEFAULT_PROTOCOL}{login_url}"
+        if 'auth_path' in org['params']:
+            auth_path = os.getenv(org['params']['auth_path'])
+        if 'consumer_key' in org['params']:
+            consumer_key = os.getenv(org['params']['consumer_key'])
+        if 'key_file' in org['params']:
+            key_file = os.getenv(org['params']['key_file'])
+        if 'user_name' in org['params']:
+            user_name = os.getenv(org['params']['user_name'])
+        if 'username' in org['params']:
+            user_name = os.getenv(org['params']['username'])
+
     return {
-        "login_url": os.getenv(login_url_key),
-        "auth_path": os.getenv(auth_path_key),
-        "key_file": os.getenv(key_file_key),
-        "username": os.getenv(user_name_key), # Dedicated integration user username
-        "issuer": os.getenv(issuer_key)
+        "login_url": login_url,
+        "auth_path": auth_path,
+        "key_file": key_file,
+        "username": user_name, # Dedicated integration user username
+        "issuer": consumer_key
     }
 
 def get_authentication(org):
@@ -74,7 +92,7 @@ def get_authentication(org):
     if response.get("access_token"):
         message = f"Successfully connected to '{org['name']}' as user {org['params']['username']}"
     else:
-        message= f"Error connecting to '{org['name']}'. Message: '{response['error_description']}'"
+        message= f"Error connecting to '{org['name']}':\n  Message: '{response['error_description']}'"
 
     return {
         "connection_name": org['name'],

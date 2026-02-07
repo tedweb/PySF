@@ -61,10 +61,11 @@ def load_connection():
   global org
   print("Available Salesforce Connections:")
   org_listing = sf_auth.get_org_listing(config)
-  selection = util.get_selection(org_listing, f"(Q)uit or select an option 1-{len(org_listing)}: ")
+  selection = util.get_selection(org_listing, f"(Q)uit or select an option 1-{len(org_listing)}: ", 1)
   org = sf_auth.authenticate_org(selection)
   print(f"{org['authentication']['message']}\r\n")
-  command_path.append(load_command)
+  if org['authentication']['access_token'] is not None: 
+    command_path.append(load_command)
 
 def load_command():
   global command_index
