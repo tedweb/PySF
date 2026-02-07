@@ -103,14 +103,14 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-#certificates
+# resource files
 *.crt
 *.csr
 *.key
-
-#config files
+*.env
+*.yml
 .DS_Store
-.env
-config.yml
-resources/.env
+
+# config files
+resources/*.env
 resources/config.yml
