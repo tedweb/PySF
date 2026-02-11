@@ -1,0 +1,11 @@
+DEFAULT_GRANT_TYPE = 'cc'
+DEFAULT_PROTOCOL = 'https://'
+DEFAULT_URL = 'login.salesforce.com'
+DEFAULT_AUTH_PATH = '/services/oauth2/token'
+GRANT_TYPE_JWT = 'urn:ietf:params:oauth:grant-type:jwt-bearer'
+GRANT_TYPE_CC = 'client_credentials'
+RESOURCE_FOLDER = 'resources'
+ENVIRONMENT_FILE = '.env'
+CONFIG_FILE = 'config.yml'
+AUTH_TYPES = ['Client Credentials', 'JWT Bearer Token']
+UNDER_CONSTRUCTION = 'Under Contruction'

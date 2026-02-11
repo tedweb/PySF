@@ -1,26 +1,40 @@
 
-import os, sys, time, math, yaml
+import os, sys, time, math, yaml, uuid
+import constants
 from os import path
 from dotenv import load_dotenv
 
 source_path = os.path.dirname(os.path.realpath(__file__))
-resource_path = os.path.join(source_path, 'resources')
+resource_path = os.path.join(source_path, constants.RESOURCE_FOLDER)
 
 def load_env_vars():
-    load_dotenv(path.join(resource_path, '.env'))
+    load_dotenv(path.join(resource_path, constants.ENVIRONMENT_FILE))
 
 def load_config():
-    config_file = os.path.join(resource_path, 'config.yml')
+    config_file = os.path.join(resource_path, constants.CONFIG_FILE)
     with open(config_file, "r") as yml_file:
         config = yaml.load(yml_file, Loader=yaml.FullLoader)
     return config
 
+def get_uuid():
+    return str(uuid.uuid4())
+
 def save_config(config):
-    config_file = os.path.join(resource_path, "config.yml")
+    config_file = os.path.join(resource_path, constants.CONFIG_FILE)
     with open(config_file, 'w') as file:
         yaml.dump(config, file)
 
-def get_selection(listings, caption=None, max_cols=5):
+def save_env(org):
+    env_file = os.path.join(resource_path, constants.ENVIRONMENT_FILE)
+    with open(env_file, "a") as file:
+        for param in org['params'].keys():
+            file.write(f"{org['params'][param]['key']} = {org['params'][param]['value']}\n")
+
+def save_access_token(org, config):
+    # print(constants.UNDER_CONSTRUCTION)
+    x = 1
+
+def get_selection(listings, caption=None, max_cols=5, alt_listings=None):
     min_count = 5
     list = []
     if len(listings) <= min_count:
@@ -52,17 +66,22 @@ def get_selection(listings, caption=None, max_cols=5):
 
     if not caption:
         caption = f"(B)ack, (Q)uit or select an option 1-{len(listings)}: "
+
+    if alt_listings:
+        for index in range(len(alt_listings)):
+            alt_listings[index] = alt_listings[index].upper()
         
     result = None
     while result is None:
         entry = input(caption).upper()
         if entry.isnumeric() and int(entry)<=len(listings):
-            #result = listings[int(entry)-1]
             result = int(entry)-1
         elif entry == 'B':
             result = entry
         elif entry == 'Q':
             shutdown(0)
+        elif entry in alt_listings:
+            result = entry
         else:
             reset_entry(caption)
     return result
@@ -134,6 +153,13 @@ def shutdown(iterations):
     print("Goodbye.\r\n")
     time.sleep(0)
     quit()
+
+def animate_msg(msg, iterations=3):
+    for i in range(iterations+1):
+        sys.stdout.write(f"\r{msg}{'.' * i}")
+        time.sleep(0.35)
+        sys.stdout.flush()
+    sys.stdout.write(f"\r{msg}{'.' * i} ")
 
 def format_get(records, fields=[]):
     formatted_response = f"{len(records)} record(s) discovered:\r\n"
