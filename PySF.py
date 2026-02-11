@@ -88,7 +88,7 @@ def load_new_org_from_cli():
     org['params'] = {}
     print("\nAvailable authentication methods:")
     selection = util.get_selection(constants.AUTH_TYPES, None, 1)
-    if do_continue(selection):
+    if selection.lower() != 'b':
         org['grant_type'] = 'jwt' if selection != 0 else constants.DEFAULT_GRANT_TYPE
         auth_params = sf_auth.get_auth_method_params(org['grant_type'])
 
@@ -103,7 +103,7 @@ def load_new_org_from_cli():
                     'key': util.get_uuid(),
                     'value': value
                 }
-    authenticate()
+        authenticate()
 
 def load_saved_org_by_name(name):
     global org
